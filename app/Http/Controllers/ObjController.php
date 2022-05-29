@@ -16,12 +16,21 @@ class ObjController extends Controller
     {
         $all_instances = Objet::all();
 
-        return response(
-            [
-                $all_instances
-            ],
-            200
-        );
+        return $all_instances;
+    }
+
+    /**
+     * @param Illuminate\Http\Request $request
+     * @return  \Illuminate\Http\Response
+     */
+    public function index2()
+    {
+        $all_instances = Objet::all();
+        $response = [];
+        foreach ($all_instances as $all_instance) {
+            array_push($response, ['name' => $all_instance->designation, 'code' => $all_instance->id]);
+        }
+        return $response;
     }
 
     /**
@@ -60,25 +69,28 @@ class ObjController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                // 'title-en' => [
-                //     'required',
-                //     'string',
-                //     'max:191',
-                //     'unique:ObjObjet_translations,title'
-                // ],
+                'designation' => 'required|string',
+                'unite' => 'required|string',
+                'prix_unitaire' => 'required|integer',
+                'superficie' => 'required|integer',
+                'qts_par_h' => 'required|integer',
             ]
         );
         if ($validator->fails()) {
             return response(
                 [
-                    'data' => [],
-                    'message' => $validator->errors()
+                    'data' => $validator->errors(),
+                    'message' => 'Check Data Format'
                 ],
                 400
             );
         }
         $ObjObjet = Objet::create([
-            // 'title'    => $validator->validated()['title'],
+            'designation'    => $validator->validated()['designation'],
+            'unite'    => $validator->validated()['unite'],
+            'prix_unitaire'    => $validator->validated()['prix_unitaire'],
+            'superficie'    => $validator->validated()['superficie'],
+            'qts_par_h'    => $validator->validated()['qts_par_h'],
         ]);
         $ObjObjet->save();
 
@@ -100,19 +112,18 @@ class ObjController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                // 'title-en' => [
-                //     'required',
-                //     'string',
-                //     'max:191',
-                //     'unique:ObjObjet_translations,title'
-                // ],
+                'designation' => 'required|string',
+                'unite' => 'required|string',
+                'prix_unitaire' => 'required|integer',
+                'superficie' => 'required|integer',
+                'qts_par_h' => 'required|integer',
             ]
         );
         if ($validator->fails()) {
             return response(
                 [
-                    'data' => [],
-                    'message' => $validator->errors()
+                    'data' => $validator->errors(),
+                    'message' => 'Check Data Format'
                 ],
                 400
             );
@@ -126,7 +137,11 @@ class ObjController extends Controller
                 400
             );
         }
-        $ObjObjet->name = $validator->validated()['title'];
+        $ObjObjet->designation = $validator->validated()['designation'];
+        $ObjObjet->unite = $validator->validated()['unite'];
+        $ObjObjet->prix_unitaire = $validator->validated()['prix_unitaire'];
+        $ObjObjet->superficie = $validator->validated()['superficie'];
+        $ObjObjet->qts_par_h = $validator->validated()['qts_par_h'];
         $ObjObjet->save();
 
         return response(

@@ -16,12 +16,7 @@ class VaribleChangController extends Controller
     {
         $all_instances = VariableChangeante::all();
 
-        return response(
-            [
-                $all_instances
-            ],
-            200
-        );
+        return $all_instances;
     }
 
     /**
@@ -66,19 +61,22 @@ class VaribleChangController extends Controller
                 //     'max:191',
                 //     'unique:VariableChangeante_translations,title'
                 // ],
+                'tva' => 'required|integer',
+                'timbre' => 'required|integer'
             ]
         );
         if ($validator->fails()) {
             return response(
                 [
-                    'data' => [],
-                    'message' => $validator->errors()
+                    'data' => $validator->errors(),
+                    'errors' => 'Check Data Format'
                 ],
                 400
             );
         }
         $VariableChangeante =  VariableChangeante::create([
-            // 'title'    => $validator->validated()['title'],
+            'tva'    => $validator->validated()['tva'],
+            'timbre'    => $validator->validated()['timbre'],
         ]);
         $VariableChangeante->save();
 
@@ -100,12 +98,8 @@ class VaribleChangController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                // 'title-en' => [
-                //     'required',
-                //     'string',
-                //     'max:191',
-                //     'unique:VariableChangeante_translations,title'
-                // ],
+                'tva' => 'required|integer',
+                'timbre' => 'required|integer'
             ]
         );
         if ($validator->fails()) {
@@ -126,7 +120,8 @@ class VaribleChangController extends Controller
                 400
             );
         }
-        $VariableChangeante->name = $validator->validated()['title'];
+        $VariableChangeante->tva = $validator->validated()['tva'];
+        $VariableChangeante->timbre = $validator->validated()['timbre'];
         $VariableChangeante->save();
 
         return response(

@@ -16,12 +16,24 @@ class MatsController extends Controller
     {
         $all_instances = Mat::all();
 
-        return response(
-            [
-                $all_instances
-            ],
-            200
-        );
+        return $all_instances;
+    }
+
+    /**
+     * @param Illuminate\Http\Request $request
+     * @return  \Illuminate\Http\Response
+     */
+    public function index2()
+    {
+        $all_instances = Mat::all();
+        $response = [];
+        foreach ($all_instances as $all_instance) {
+            array_push($response, [
+                'name' => $all_instance->designation,
+                'code' => $all_instance->id
+            ]);
+        }
+        return $response;
     }
 
     /**
@@ -60,25 +72,24 @@ class MatsController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                // 'title-en' => [
-                //     'required',
-                //     'string',
-                //     'max:191',
-                //     'unique:Mat_translations,title'
-                // ],
+                'designation' => 'required|string',
+                'unite' => 'required|integer',
+                'prix_unitaire' => 'required|integer',
             ]
         );
         if ($validator->fails()) {
             return response(
                 [
-                    'data' => [],
-                    'message' => $validator->errors()
+                    'data' => $validator->errors(),
+                    'errors' => 'Check Data Format'
                 ],
                 400
             );
         }
         $Mat =  Mat::create([
-            // 'title'    => $validator->validated()['title'],
+            'designation'    => $validator->validated()['designation'],
+            'unite'    => $validator->validated()['unite'],
+            'prix_unitaire'    => $validator->validated()['prix_unitaire'],
         ]);
         $Mat->save();
 
@@ -100,12 +111,9 @@ class MatsController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                // 'title-en' => [
-                //     'required',
-                //     'string',
-                //     'max:191',
-                //     'unique:Mat_translations,title'
-                // ],
+                'designation' => 'required|string',
+                'unite' => 'required|integer',
+                'prix_unitaire' => 'required|integer',
             ]
         );
         if ($validator->fails()) {
@@ -126,7 +134,9 @@ class MatsController extends Controller
                 400
             );
         }
-        $Mat->name = $validator->validated()['title'];
+        $Mat->designation = $validator->validated()['designation'];
+        $Mat->unite = $validator->validated()['unite'];
+        $Mat->prix_unitaire = $validator->validated()['prix_unitaire'];
         $Mat->save();
 
         return response(

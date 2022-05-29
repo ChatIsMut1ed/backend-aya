@@ -16,12 +16,7 @@ class DemandeFactureController extends Controller
     {
         $all_instances = DemandeFacture::all();
 
-        return response(
-            [
-                $all_instances
-            ],
-            200
-        );
+        return $all_instances;
     }
 
     /**
@@ -60,25 +55,31 @@ class DemandeFactureController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                // 'title-en' => [
-                //     'required',
-                //     'string',
-                //     'max:191',
-                //     'unique:DemandeFacture_translations,title'
-                // ],
+                'qts' => 'required|string',
+                'date' => 'required|string',
+                'doit' => 'required|string',
+                'act_id' => 'required|integer',
+                // 'des_soc' => 'required|integer',
+                // 'var_chang' => 'required|integer',
             ]
         );
         if ($validator->fails()) {
             return response(
                 [
                     'data' => [],
-                    'message' => $validator->errors()
+                    'errors' => $validator->errors()
                 ],
                 400
             );
         }
         $DemandeFacture =  DemandeFacture::create([
-            // 'title'    => $validator->validated()['title'],
+            'qts'    => $validator->validated()['qts'],
+            'date'    => $validator->validated()['date'],
+            'doit'    => $validator->validated()['doit'],
+            'act_id'    => $validator->validated()['act_id'],
+            'des_soc'    => 1,
+            'var_chang'    => 1,
+
         ]);
         $DemandeFacture->save();
 

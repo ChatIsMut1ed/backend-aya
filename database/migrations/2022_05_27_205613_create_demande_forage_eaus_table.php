@@ -23,7 +23,7 @@ return new class extends Migration
             $table->dateTime('date_disposition')->default(Carbon::now());
             $table->string('adresse');
             $table->string('tel');
-            $table->bigInteger('gouvernorat');
+            $table->string('gouvernorat');
             $table->string('decanat');
             $table->double('superficie', 8, 5);
             $table->string('type_projet');

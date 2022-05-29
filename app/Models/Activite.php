@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Activite extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'lib',
+        'prix_unitaire',
+    ];
 }

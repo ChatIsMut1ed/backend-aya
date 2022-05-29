@@ -16,12 +16,7 @@ class DevisObjController extends Controller
     {
         $all_instances = DevisObj::all();
 
-        return response(
-            [
-                $all_instances
-            ],
-            200
-        );
+        return $all_instances;
     }
 
     /**
@@ -66,19 +61,31 @@ class DevisObjController extends Controller
                 //     'max:191',
                 //     'unique:DevisObj_translations,title'
                 // ],
+                'obj_id' => 'required|integer',
+                'nom' => 'required|string',
+                'responsable' => 'required|string',
+                'ecartement' => 'required|string',
+                'ha' => 'required|string',
+                'qts_totale' => 'required|integer',
+
             ]
         );
         if ($validator->fails()) {
             return response(
                 [
-                    'data' => [],
-                    'message' => $validator->errors()
+                    'data' => $validator->errors(),
+                    'message' => 'Check Data Format'
                 ],
                 400
             );
         }
         $DevisObj =  DevisObj::create([
-            // 'title'    => $validator->validated()['title'],
+            'obj_id'    => $validator->validated()['obj_id'],
+            'nom'    => $validator->validated()['nom'],
+            'responsable'    => $validator->validated()['responsable'],
+            'ecartement'    => $validator->validated()['ecartement'],
+            'ha'    => $validator->validated()['ha'],
+            'qts_totale'    => $validator->validated()['qts_totale'],
         ]);
         $DevisObj->save();
 
@@ -100,12 +107,12 @@ class DevisObjController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                // 'title-en' => [
-                //     'required',
-                //     'string',
-                //     'max:191',
-                //     'unique:DevisObj_translations,title'
-                // ],
+                'obj_id' => 'required|integer',
+                'nom' => 'required|string',
+                'responsable' => 'required|string',
+                'ecartement' => 'required|string',
+                'ha' => 'required|string',
+                'qts_totale' => 'required|integer',
             ]
         );
         if ($validator->fails()) {
@@ -126,7 +133,12 @@ class DevisObjController extends Controller
                 400
             );
         }
-        $DevisObj->name = $validator->validated()['title'];
+        $DevisObj->obj_id = $validator->validated()['obj_id'];
+        $DevisObj->nom = $validator->validated()['nom'];
+        $DevisObj->responsable = $validator->validated()['responsable'];
+        $DevisObj->ecartement = $validator->validated()['ecartement'];
+        $DevisObj->ha = $validator->validated()['ha'];
+        $DevisObj->qts_totale = $validator->validated()['qts_totale'];
         $DevisObj->save();
 
         return response(

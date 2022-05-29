@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Declaration;
+use App\Models\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class DeclarationController extends Controller
+class ClientController extends Controller
 {
     /**
      * @param Illuminate\Http\Request $request
@@ -14,25 +14,37 @@ class DeclarationController extends Controller
      */
     public function index()
     {
-        $all_instances = Declaration::all();
+        $all_instances = Client::all();
 
         return $all_instances;
     }
-
+    /**
+     * @param Illuminate\Http\Requsest $request
+     * @return  \Illuminate\Http\Response
+     */
+    public function index2()
+    {
+        $all_instances = Client::all();
+        $response = [];
+        foreach ($all_instances as $all_instance) {
+            array_push($response, ['name' => $all_instance->cin, 'code' => $all_instance->id]);
+        }
+        return $response;
+    }
     /**
      * @param Illuminate\Http\Request $request
      * @return  \Illuminate\Http\Response
-     * @param int $Declaration_id
+     * @param int $Client_id
      */
-    public function GetInstanceById(int $Declaration_id)
+    public function GetInstanceById(int $Client_id)
     {
-        $instance = Declaration::where('id', $Declaration_id)->first();
+        $instance = Client::where('id', $Client_id)->first();
 
         if (!$instance) {
             return response(
                 [
                     'data' => [],
-                    'message' => "$Declaration_id Not Found",
+                    'message' => "$Client_id Not Found",
                 ],
                 200
             );
@@ -45,7 +57,26 @@ class DeclarationController extends Controller
             200
         );
     }
+    /**
+     * @param Illuminate\Http\Request $request
+     * @return  \Illuminate\Http\Response
+     * @param int $Client_id
+     */
+    public function GetInstanceByCin(int $Client_id)
+    {
+        $instance = Client::where('cin', $Client_id)->first();
 
+        if (!$instance) {
+            return response(
+                [
+                    'data' => [],
+                    'message' => "$Client_id Not Found",
+                ],
+                200
+            );
+        }
+        return $instance;
+    }
     /**
      * @param Illuminate\Http\Request $request
      * @return  \Illuminate\Http\Response
@@ -59,7 +90,7 @@ class DeclarationController extends Controller
                 //     'required',
                 //     'string',
                 //     'max:191',
-                //     'unique:Declaration_translations,title'
+                //     'unique:Client_translations,title'
                 // ],
             ]
         );
@@ -72,10 +103,10 @@ class DeclarationController extends Controller
                 400
             );
         }
-        $Declaration =  Declaration::create([
+        $Client =  Client::create([
             // 'title'    => $validator->validated()['title'],
         ]);
-        $Declaration->save();
+        $Client->save();
 
         return response(
             [
@@ -88,9 +119,9 @@ class DeclarationController extends Controller
     /**
      * @param Illuminate\Http\Request $request
      * @return  \Illuminate\Http\Response
-     * @param int $Declaration_id
+     * @param int $Client_id
      */
-    public function UpdateInstance(Request $request, int $Declaration_id)
+    public function UpdateInstance(Request $request, int $Client_id)
     {
         $validator = Validator::make(
             $request->all(),
@@ -99,7 +130,7 @@ class DeclarationController extends Controller
                 //     'required',
                 //     'string',
                 //     'max:191',
-                //     'unique:Declaration_translations,title'
+                //     'unique:Client_translations,title'
                 // ],
             ]
         );
@@ -112,17 +143,17 @@ class DeclarationController extends Controller
                 400
             );
         }
-        $Declaration = Declaration::where('id', $Declaration_id)->first();
-        if (!$Declaration) {
+        $Client = Client::where('id', $Client_id)->first();
+        if (!$Client) {
             return response(
                 [
-                    'message' => "$Declaration_id Not Found"
+                    'message' => "$Client_id Not Found"
                 ],
                 400
             );
         }
-        $Declaration->name = $validator->validated()['title'];
-        $Declaration->save();
+        $Client->name = $validator->validated()['title'];
+        $Client->save();
 
         return response(
             [
@@ -135,20 +166,20 @@ class DeclarationController extends Controller
     /**
      * @param Illuminate\Http\Request $request
      * @return  \Illuminate\Http\Response
-     * @param int $Declaration_id
+     * @param int $Client_id
      */
-    public function DeleteInstance(int $Declaration_id)
+    public function DeleteInstance(int $Client_id)
     {
-        $Declaration = Declaration::where('id', $Declaration_id)->first();
-        if (!$Declaration) {
+        $Client = Client::where('id', $Client_id)->first();
+        if (!$Client) {
             return response(
                 [
-                    'message' => "$Declaration_id Not Found"
+                    'message' => "$Client_id Not Found"
                 ],
                 400
             );
         };
-        $Declaration->delete();
+        $Client->delete();
 
         return response(
             [

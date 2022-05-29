@@ -16,14 +16,21 @@ class ActiviteController extends Controller
     {
         $all_instances = Activite::all();
 
-        return response(
-            [
-                $all_instances
-            ],
-            200
-        );
+        return $all_instances;
     }
-
+    /**
+     * @param Illuminate\Http\Request $request
+     * @return  \Illuminate\Http\Response
+     */
+    public function index2()
+    {
+        $all_instances = Activite::all();
+        $response = [];
+        foreach ($all_instances as $all_instance) {
+            array_push($response, ['name' => $all_instance->lib, 'code' => $all_instance->id]);
+        }
+        return $response;
+    }
     /**
      * @param Illuminate\Http\Request $request
      * @return  \Illuminate\Http\Response
@@ -60,12 +67,8 @@ class ActiviteController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                // 'title-en' => [
-                //     'required',
-                //     'string',
-                //     'max:191',
-                //     'unique:Activite_translations,title'
-                // ],
+                'lib' => 'required|string',
+                'prix_unitaire' => 'required|integer',
             ]
         );
         if ($validator->fails()) {
@@ -78,7 +81,8 @@ class ActiviteController extends Controller
             );
         }
         $Activite =  Activite::create([
-            // 'title'    => $validator->validated()['title'],
+            'lib'    => $validator->validated()['lib'],
+            'prix_unitaire'    => $validator->validated()['prix_unitaire'],
         ]);
         $Activite->save();
 

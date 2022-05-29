@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class VariableChangeante extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'tva',
+        'timbre',
+        'date',
+    ];
 }

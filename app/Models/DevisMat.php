@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class DevisMat extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'nom',
+        'responsable',
+        'superficie',
+        'qts',
+        'mat_id',
+    ];
 }

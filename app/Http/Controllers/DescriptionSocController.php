@@ -16,12 +16,7 @@ class DescriptionSocController extends Controller
     {
         $all_instances = DescriptionSociete::all();
 
-        return response(
-            [
-                $all_instances
-            ],
-            200
-        );
+        return $all_instances;
     }
 
     /**
@@ -60,25 +55,30 @@ class DescriptionSocController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                // 'title-en' => [
-                //     'required',
-                //     'string',
-                //     'max:191',
-                //     'unique:DescriptionSociete_translations,title'
-                // ],
+                'nom' => 'required|string',
+                'adresse' => 'required|string',
+                'email' => 'required|string',
+                'num_bank' => 'required|integer',
+                'tel' => 'required|string',
+                'ref_tva' => 'required|string',
             ]
         );
         if ($validator->fails()) {
             return response(
                 [
-                    'data' => [],
-                    'message' => $validator->errors()
+                    'data' => $validator->errors(),
+                    'errors' => 'Check Data Form'
                 ],
                 400
             );
         }
         $DescriptionSociete =  DescriptionSociete::create([
-            // 'title'    => $validator->validated()['title'],
+            'nom' => $validator->validated()['nom'],
+            'adresse' => $validator->validated()['adresse'],
+            'email' => $validator->validated()['email'],
+            'num_bank' => $validator->validated()['num_bank'],
+            'tel' => $validator->validated()['tel'],
+            'ref_tva' => $validator->validated()['ref_tva'],
         ]);
         $DescriptionSociete->save();
 
@@ -100,19 +100,19 @@ class DescriptionSocController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                // 'title-en' => [
-                //     'required',
-                //     'string',
-                //     'max:191',
-                //     'unique:DescriptionSociete_translations,title'
-                // ],
+                'nom' => 'required|string',
+                'adresse' => 'required|string',
+                'email' => 'required|string',
+                'num_bank' => 'required|integer',
+                'tel' => 'required|string',
+                'ref_tva' => 'required|string',
             ]
         );
         if ($validator->fails()) {
             return response(
                 [
-                    'data' => [],
-                    'message' => $validator->errors()
+                    'data' => $validator->errors(),
+                    'message' => 'Check Data Format'
                 ],
                 400
             );
@@ -126,7 +126,12 @@ class DescriptionSocController extends Controller
                 400
             );
         }
-        $DescriptionSociete->name = $validator->validated()['title'];
+        $DescriptionSociete->nom = $validator->validated()['nom'];
+        $DescriptionSociete->adresse = $validator->validated()['adresse'];
+        $DescriptionSociete->email = $validator->validated()['email'];
+        $DescriptionSociete->num_bank = $validator->validated()['num_bank'];
+        $DescriptionSociete->tel = $validator->validated()['tel'];
+        $DescriptionSociete->ref_tva = $validator->validated()['ref_tva'];
         $DescriptionSociete->save();
 
         return response(

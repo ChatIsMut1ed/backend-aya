@@ -16,12 +16,7 @@ class DemandeExperController extends Controller
     {
         $all_instances = DemandeExpertiseSol::all();
 
-        return response(
-            [
-                $all_instances
-            ],
-            200
-        );
+        return $all_instances;
     }
 
     /**
@@ -66,19 +61,41 @@ class DemandeExperController extends Controller
                 //     'max:191',
                 //     'unique:DemandeDemandeExpertiseSol_translations,title'
                 // ],
+                'nom_postulant' => 'required|string',
+                'cin' => 'required|integer',
+                'adresse' => 'required|string',
+                'tel' => 'required|string',
+                'num_frais_im' => 'required|integer',
+                'local' => 'required|string',
+                'endroit' => 'required|string',
+                'decanat' => 'required|string',
+                'delegation' => 'required|string',
+                'superficie' => 'required|integer',
+                'ut_act_sol' => 'required|string',
             ]
         );
         if ($validator->fails()) {
             return response(
                 [
-                    'data' => [],
-                    'message' => $validator->errors()
+                    'data' => $validator->errors(),
+                    'message' => 'Check Data Format'
                 ],
                 400
             );
         }
         $DemandeDemandeExpertiseSol = DemandeExpertiseSol::create([
-            // 'title'    => $validator->validated()['title'],
+            'nom_postulant'    => $validator->validated()['nom_postulant'],
+            'cin'    => $validator->validated()['cin'],
+            'adresse'    => $validator->validated()['adresse'],
+            'tel'    => $validator->validated()['tel'],
+            'num_frais_im'    => $validator->validated()['num_frais_im'],
+            'local'    => $validator->validated()['local'],
+            'endroit'    => $validator->validated()['endroit'],
+            'decanat'    => $validator->validated()['decanat'],
+            'delegation'    => $validator->validated()['delegation'],
+            'superficie'    => $validator->validated()['superficie'],
+            'ut_act_sol'    => $validator->validated()['ut_act_sol'],
+
         ]);
         $DemandeDemandeExpertiseSol->save();
 
@@ -100,19 +117,24 @@ class DemandeExperController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                // 'title-en' => [
-                //     'required',
-                //     'string',
-                //     'max:191',
-                //     'unique:DemandeDemandeExpertiseSol_translations,title'
-                // ],
+                'nom_postulant' => 'required|string',
+                'cin' => 'required|integer',
+                'adresse' => 'required|string',
+                'tel' => 'required|string',
+                'num_frais_im' => 'required|integer',
+                'local' => 'required|string',
+                'endroit' => 'required|string',
+                'decanat' => 'required|string',
+                'delegation' => 'required|string',
+                'superficie' => 'required|integer',
+                'ut_act_sol' => 'required|string',
             ]
         );
         if ($validator->fails()) {
             return response(
                 [
-                    'data' => [],
-                    'message' => $validator->errors()
+                    'data' => $validator->errors(),
+                    'message' => 'Check Data Format'
                 ],
                 400
             );
@@ -126,7 +148,17 @@ class DemandeExperController extends Controller
                 400
             );
         }
-        $DemandeDemandeExpertiseSol->name = $validator->validated()['title'];
+        $DemandeDemandeExpertiseSol->nom_postulant = $validator->validated()['nom_postulant'];
+        $DemandeDemandeExpertiseSol->cin = $validator->validated()['cin'];
+        $DemandeDemandeExpertiseSol->adresse = $validator->validated()['adresse'];
+        $DemandeDemandeExpertiseSol->tel = $validator->validated()['tel'];
+        $DemandeDemandeExpertiseSol->num_frais_im = $validator->validated()['num_frais_im'];
+        $DemandeDemandeExpertiseSol->local = $validator->validated()['local'];
+        $DemandeDemandeExpertiseSol->endroit = $validator->validated()['endroit'];
+        $DemandeDemandeExpertiseSol->decanat = $validator->validated()['decanat'];
+        $DemandeDemandeExpertiseSol->delegation = $validator->validated()['delegation'];
+        $DemandeDemandeExpertiseSol->superficie = $validator->validated()['superficie'];
+        $DemandeDemandeExpertiseSol->ut_act_sol = $validator->validated()['ut_act_sol'];
         $DemandeDemandeExpertiseSol->save();
 
         return response(

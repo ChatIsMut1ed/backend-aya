@@ -16,12 +16,7 @@ class DevisMatController extends Controller
     {
         $all_instances = DevisMat::all();
 
-        return response(
-            [
-                $all_instances
-            ],
-            200
-        );
+        return $all_instances;
     }
 
     /**
@@ -66,6 +61,11 @@ class DevisMatController extends Controller
                 //     'max:191',
                 //     'unique:DevisMat_translations,title'
                 // ],
+                'nom' => 'required|string',
+                'responsable' => 'required|string',
+                'superficie' => 'required|integer',
+                'qts' => 'required|integer',
+                'mat_id' => 'required|integer',
             ]
         );
         if ($validator->fails()) {
@@ -79,6 +79,11 @@ class DevisMatController extends Controller
         }
         $DevisMat =  DevisMat::create([
             // 'title'    => $validator->validated()['title'],
+            'nom' => $validator->validated()['nom'],
+            'responsable' => $validator->validated()['responsable'],
+            'superficie' => $validator->validated()['superficie'],
+            'qts' => $validator->validated()['qts'],
+            'mat_id' => $validator->validated()['mat_id'],
         ]);
         $DevisMat->save();
 
@@ -100,12 +105,11 @@ class DevisMatController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                // 'title-en' => [
-                //     'required',
-                //     'string',
-                //     'max:191',
-                //     'unique:DevisMat_translations,title'
-                // ],
+                'nom' => 'required|string',
+                'responsable' => 'required|string',
+                'superficie' => 'required|integer',
+                'qts' => 'required|integer',
+                'mat_id' => 'required|integer',
             ]
         );
         if ($validator->fails()) {
@@ -126,7 +130,11 @@ class DevisMatController extends Controller
                 400
             );
         }
-        $DevisMat->name = $validator->validated()['title'];
+        $DevisMat->nom = $validator->validated()['nom'];
+        $DevisMat->responsable = $validator->validated()['responsable'];
+        $DevisMat->superficie = $validator->validated()['superficie'];
+        $DevisMat->qts = $validator->validated()['qts'];
+        $DevisMat->mat_id = $validator->validated()['mat_id'];
         $DevisMat->save();
 
         return response(

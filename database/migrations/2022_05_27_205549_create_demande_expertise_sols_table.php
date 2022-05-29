@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,7 +18,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->string('nom_postulant');
             $table->bigInteger('cin');
-            $table->dateTime('date');
+            $table->dateTime('date')->default(Carbon::now());
             $table->string('adresse');
             $table->string('tel');
             $table->bigInteger('num_frais_im');

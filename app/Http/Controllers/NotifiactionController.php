@@ -16,12 +16,7 @@ class NotifiactionController extends Controller
     {
         $all_instances = Notification::all();
 
-        return response(
-            [
-                $all_instances
-            ],
-            200
-        );
+        return $all_instances;
     }
 
     /**

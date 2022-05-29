@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Client;
 use App\Models\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -16,12 +17,7 @@ class ContactController extends Controller
     {
         $all_instances = Contact::all();
 
-        return response(
-            [
-                $all_instances
-            ],
-            200
-        );
+        return $all_instances;
     }
 
     /**
@@ -60,25 +56,35 @@ class ContactController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                // 'title-en' => [
-                //     'required',
-                //     'string',
-                //     'max:191',
-                //     'unique:Contact_translations,title'
-                // ],
+                'email' => [
+                    'required',
+                    'string',
+                    'email',
+                ],
+                'message' => 'required|string|max:255'
             ]
         );
         if ($validator->fails()) {
             return response(
                 [
                     'data' => [],
-                    'message' => $validator->errors()
+                    'errors' => 'Check Data Format'
+                ],
+                400
+            );
+        }
+        $client = Client::where('email', $request->all()['email'])->first();
+        if (!$client) {
+            return response(
+                [
+                    'errors' => 'client does not exists'
                 ],
                 400
             );
         }
         $Contact =  Contact::create([
-            // 'title'    => $validator->validated()['title'],
+            'client_id' => $client->id,
+            'message' => $request->all()['message']
         ]);
         $Contact->save();
 
