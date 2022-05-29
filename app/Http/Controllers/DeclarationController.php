@@ -32,7 +32,7 @@ class DeclarationController extends Controller
             return response(
                 [
                     'data' => [],
-                    'message' => "$Declaration_id Not Found",
+                    'errors' => "$Declaration_id Not Found",
                 ],
                 200
             );
@@ -61,19 +61,64 @@ class DeclarationController extends Controller
                 //     'max:191',
                 //     'unique:Declaration_translations,title'
                 // ],
+                "agent_de_representation" => 'required|string',
+                "siege_social" => 'required|string',
+                "enregistrement_commercial" => 'required|string',
+                "id_poche_diwani" => 'required|string',
+                "capital_social" => 'required|string',
+                "nature_juridique" => 'required|string',
+                "apport_etranger" => 'required|string',
+                "Numéro_immatriculation_caisse_nationale" => 'required|string',
+                "tel" => 'required|string',
+                "fax" => 'required|string',
+                "email" => 'required|string',
+                "systeme_investissement" => 'required|string',
+                "nature_projet" => 'required|string',
+                "secteur" => 'required|string',
+                "activite" => 'required|string',
+                "activites_secondaires" => 'required|string',
+                "Données_detaillees" => 'required|string',
+                "numéro_plaque_immatriculation_1" => 'required|string',
+                "numéro_plaque_immatriculation_2" => 'required|string',
+                "numéro_plaque_immatriculation_3" => 'required|string',
+                "etat" => 'required|string',
+                "delegation" => 'required|string',
+                "decanat" => 'required|string',
+                "adresse_emplacement" => 'required|string',
+                "servitude" => 'required|string',
+                "espace" => 'required|string',
+                "formulation_exploitation" => 'required|string',
+                "date_signature" => 'required|string',
+                "user_id" => 'required|string',
             ]
         );
         if ($validator->fails()) {
             return response(
                 [
-                    'data' => [],
-                    'message' => $validator->errors()
+                    'data' => $validator->errors(),
+                    'errors' => "Check Data Format"
                 ],
                 400
             );
         }
+        $res = json_encode($request->all(), true);
         $Declaration =  Declaration::create([
-            // 'title'    => $validator->validated()['title'],
+            'resg_Dec' => $res,
+            "resg_Enr" => "None",
+            "resg_projet" => "None",
+            "licence_projet" => "None",
+            "lieu_projet" => "None",
+            "emplois" => "None",
+            "caracte_projet" => "None",
+            "struct_finance" => "None",
+            "declaration_equip" => "None",
+            "mat_per_semi" => "None",
+            "calendrier" => "None",
+            "resg_inst_droite" => "None",
+            "liv_cert_per_inves" => "None",
+            "incitation_requises" => "None",
+            "repar_capital_social" => "None",
+
         ]);
         $Declaration->save();
 
